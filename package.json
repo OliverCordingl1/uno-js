@@ -1,0 +1,12 @@
+{
+  "name": "uno",
+  "version": "1.0.0",
+  "scripts": {
+    "start:dev": "parcel src/index.html"
+  },
+  "author": "Oliver Cordingley",
+  "type": "commonjs",
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}
