@@ -16,10 +16,20 @@ export class PlayerRenderer extends EventEmitter<PlayerRendererEvents> {
     this.root = document.createElement("div");
 
     this.draw();
+
+    player.on("handUpdated", () => this.redraw());
+    player.on("activeStatusChanged", this.handleCurrentTurnEvent.bind(this));
+  }
+
+  private redraw(): void {
+    this.reset();
+    this.draw();
   }
 
   private draw(): void {
-    this.root.className = "player-hud";
+    this.root.classList.add("player-hud");
+
+    if (this.player.turnActive) this.root.classList.add("current-turn");
 
     const header = this.drawHeader();
     const hand = this.drawHand();
@@ -56,6 +66,23 @@ export class PlayerRenderer extends EventEmitter<PlayerRendererEvents> {
     });
 
     return cardGrid;
+  }
+
+  private handleCurrentTurnEvent(isCurrentTurn: boolean): void {
+    const hasCurrentTurnClass = this.root.classList.contains("current-turn");
+
+    if (isCurrentTurn && !hasCurrentTurnClass) {
+      this.root.classList.add("current-turn");
+      return;
+    }
+
+    this.root.classList.remove("current-turn");
+  }
+
+  private reset(): void {
+    while (this.root.firstChild) {
+      this.root.removeChild(this.root.lastChild!);
+    }
   }
 
   public get domElement(): HTMLDivElement {

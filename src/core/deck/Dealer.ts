@@ -2,20 +2,12 @@ import { Player } from "../player/Player";
 import { Deck } from "./Deck";
 
 export class Dealer {
-  constructor(
-    private readonly deck: Deck,
-    private readonly players: Player[],
-  ) {}
+  constructor(private readonly deck: Deck) {}
 
-  deal(): void {
-    const cardsPerPlayer = 7;
-
-    for (let deal = 0; deal < cardsPerPlayer; deal++) {
-      this.players.forEach((player) => {
-        const card = this.deck.pop();
-
-        player.addCard(card);
-      });
+  deal(player: Player, count: number): void {
+    for (let deal = 0; deal < count; deal++) {
+      const card = this.deck.pop();
+      player.addCard(card);
     }
   }
 }

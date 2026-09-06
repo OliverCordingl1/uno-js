@@ -6,6 +6,7 @@ import { CommandKey } from "./actions/CommandKey";
 import { PlayCardAction } from "./actions/actions/PlayCardAction";
 import { PlayCardCommand } from "./actions/commands/PlayCardCommand";
 import { EventEmitter } from "./lib/EventEmitter";
+import { Player } from "./player/Player";
 
 export type GameControllerEvents = {
   cardClicked: Card;
@@ -39,8 +40,14 @@ export class GameController extends EventEmitter<GameControllerEvents> {
     this.renderer.on("cardClicked", this.handleCardClicked.bind(this));
   }
 
-  private handleCardClicked(card: Card): void {
-    const command = new PlayCardCommand(card);
+  private handleCardClicked({
+    card,
+    actor,
+  }: {
+    card: Card;
+    actor: Player;
+  }): void {
+    const command = new PlayCardCommand(actor, card);
 
     const result = this.dispatcher.dispatch<PlayCardCommand>(command);
 

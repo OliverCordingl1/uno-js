@@ -1,10 +1,14 @@
 import { Card } from "../core/card/Card";
 import { Game } from "../core/Game";
 import { EventEmitter } from "../core/lib/EventEmitter";
+import { Player } from "../core/player/Player";
 import { PlayerRenderer } from "./player/PlayerRenderer";
 
 export type GameRendererEvents = {
-  cardClicked: Card;
+  cardClicked: {
+    actor: Player;
+    card: Card;
+  };
 };
 
 export class GameRenderer extends EventEmitter<GameRendererEvents> {
@@ -20,7 +24,7 @@ export class GameRenderer extends EventEmitter<GameRendererEvents> {
       const renderer = new PlayerRenderer(player);
 
       renderer.on("cardClicked", (card) => {
-        this.emit("cardClicked", card);
+        this.emit("cardClicked", { actor: player, card });
       });
 
       return renderer;
@@ -31,7 +35,6 @@ export class GameRenderer extends EventEmitter<GameRendererEvents> {
     this.clearRoot();
 
     this.playerRenderers.forEach((renderer, i) => {
-      console.log("initialising player renderer", i + 1);
       this.root.appendChild(renderer.domElement);
     });
   }

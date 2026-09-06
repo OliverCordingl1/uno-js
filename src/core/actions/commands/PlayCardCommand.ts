@@ -1,4 +1,5 @@
 import { Card } from "../../card/Card";
+import { Player } from "../../player/Player";
 import { Command } from "../Command";
 import { CommandKey } from "../CommandKey";
 
@@ -17,5 +18,8 @@ export class PlayCardCommand implements Command<PlayCardResult> {
   public readonly type = CommandKey.PlayCard;
   declare readonly __result: PlayCardResult;
 
-  constructor(public readonly card: Card) {}
+  constructor(
+    public readonly actor: Player,
+    public readonly card: Card,
+  ) {}
 }
