@@ -20,7 +20,7 @@ export class GameRenderer extends EventEmitter<GameRendererEvents> {
       const renderer = new PlayerRenderer(player);
 
       renderer.on("cardClicked", (card) => {
-        alert(`Clicked card : ${card.colour} ${card.value}`);
+        this.emit("cardClicked", card);
       });
 
       return renderer;
