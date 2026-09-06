@@ -25,41 +25,7 @@ export class Game {
     dealer.deal();
   }
 
-  public render(gameDiv: HTMLDivElement): void {
-    for (const player of this._players) {
-      const hud = document.createElement("div");
-      hud.className = "player-hud";
-
-      const hudHeader = document.createElement("div");
-      hudHeader.className = "player-hud-header";
-
-      const hudTitle = document.createElement("span");
-      hudTitle.className = "player-name";
-      hudTitle.innerText = player.name;
-
-      hudHeader.appendChild(hudTitle);
-      hud.appendChild(hudHeader);
-
-      const hudHand = document.createElement("div");
-      hudHand.className = "card-grid";
-
-      player.hand.forEach((card) => {
-        const cardDiv = document.createElement("div");
-        cardDiv.className = `card card-${card.colour}`;
-
-        if (card instanceof NumberCard) {
-          const cardTitle = document.createElement("span");
-          cardTitle.className = "card-title";
-          cardTitle.innerText = `${card.value}`;
-
-          cardDiv.appendChild(cardTitle);
-        }
-
-        hudHand.appendChild(cardDiv);
-      });
-
-      hud.appendChild(hudHand);
-      gameDiv.appendChild(hud);
-    }
+  public get players(): Player[] {
+    return this._players;
   }
 }

@@ -1,7 +1,7 @@
 import { Card } from "../card/Card";
 import { NumberCard } from "../card/NumberCard";
-import { CardColour } from "../CardColour";
-import { Random } from "../Random";
+import { CardColour } from "../card/CardColour";
+import { Random } from "../lib/Random";
 import { CARD_SELECTION_TABLE } from "./DeckConstants";
 
 export class Deck {

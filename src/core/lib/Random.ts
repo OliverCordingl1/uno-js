@@ -1,4 +1,4 @@
-import { RandomIntMinGreaterThanMaxError } from "./errors/RandomIntMinGreaterThanMaxError";
+import { RandomIntMinGreaterThanMaxError } from "../errors/RandomIntMinGreaterThanMaxError";
 
 export class Random {
   private constructor() {}

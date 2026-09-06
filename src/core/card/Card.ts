@@ -1,4 +1,4 @@
-import { CardColour } from "../CardColour";
+import { CardColour } from "./CardColour";
 
 export abstract class Card {
   constructor(
