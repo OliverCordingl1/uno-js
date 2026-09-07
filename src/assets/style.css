@@ -1,0 +1,198 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+:root {
+  --colour-red: #d72600;
+  --colour-yellow: #ecd407;
+  --colour-blue: #0956bf;
+  --colour-green: #379711;
+  --colour-wild: #110a0a;
+
+  --polka-bg-image:
+    radial-gradient(rgb(27, 66, 0) 30.4%, transparent 48.4%),
+    radial-gradient(rgb(27, 66, 0) 30.4%, transparent 48.4%);
+  --polka-bg-position: 0px 0px, 12px 12px;
+  --polka-bg-size: 24px 24px;
+  --polka-bg-color: rgb(24, 61, 0);
+}
+
+#game {
+  width: 100vw;
+  height: 100vh;
+  overflow: none;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(20px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border: 2px solid #eee;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.card.hidden-card {
+  background-color: #000;
+}
+
+.card-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.card-wild-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+
+  border: 32px solid white;
+
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+
+  /* z-index: 5; */
+}
+
+.card-wild-icon::before {
+  content: "";
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 44px;
+  height: 44px;
+
+  border-radius: 50%;
+
+  border-left-color: var(--colour-red);
+  border-top-color: var(--colour-yellow);
+  border-right-color: var(--colour-blue);
+  border-bottom-color: var(--colour-green);
+  border-style: solid;
+  border-width: 20px;
+
+  z-index: -1;
+}
+
+.card-red {
+  background-color: var(--colour-red);
+}
+
+.card-yellow {
+  background-color: var(--colour-yellow);
+}
+
+.card-blue {
+  background-color: var(--colour-blue);
+}
+
+.card-green {
+  background-color: var(--colour-green);
+}
+
+.card-wild {
+  background-color: var(--colour-wild);
+}
+
+.player-hud {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
+  max-height: 25vh;
+  overflow: scroll;
+}
+
+.player-hud-header {
+  padding: 0 1rem;
+}
+
+.player-hud .player-name {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.player-hud.current-turn {
+  background-color: #99cc99;
+}
+
+.table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 2rem;
+
+  /* min-height: 66vh; */
+  flex: 1;
+
+  background-image:
+    radial-gradient(rgb(27, 66, 0) 30.4%, transparent 48.4%),
+    radial-gradient(rgb(27, 66, 0) 30.4%, transparent 48.4%);
+  background-position:
+    0px 0px,
+    12px 12px;
+  background-size: 24px 24px;
+  background-color: rgb(24, 61, 0);
+}
+
+.table .deck {
+  position: relative;
+  width: 250px;
+}
+
+.table .deck .card {
+  position: absolute;
+  width: 100%;
+  z-index: 4;
+  transition: transform ease-in-out 150ms;
+}
+
+.table .deck .card:not(.hidden-card):hover {
+  transform: translateY(-8px) rotate(1deg) scale(1.025);
+  cursor: pointer;
+}
+
+.table .deck .hidden-card:hover {
+  transform: rotate(0.5deg);
+}
+
+.table .deck .hidden-card:nth-of-type(1) {
+  left: -8px;
+  top: 4px;
+  z-index: 3;
+}
+
+.table .deck .hidden-card:nth-of-type(2) {
+  left: -16px;
+  top: 8px;
+  z-index: 2;
+}
+
+.table .deck .hidden-card:nth-of-type(3) {
+  left: -24px;
+  top: 12px;
+  z-index: 1;
+}

@@ -2,11 +2,13 @@ import { Game } from "./Game";
 import { GameRenderer } from "../presentation/GameRenderer";
 import { Card } from "./card/Card";
 import { ActionDispatcher } from "./actions/ActionDispatcher";
-import { CommandKey } from "./actions/CommandKey";
-import { PlayCardAction } from "./actions/actions/PlayCardAction";
+import { getActions } from "./actions/getActions";
 import { PlayCardCommand } from "./actions/commands/PlayCardCommand";
+import { DrawCardCommand } from "./actions/commands/DrawCardCommand";
 import { EventEmitter } from "./lib/EventEmitter";
 import { Player } from "./player/Player";
+import { CommandKey } from "./actions/CommandKey";
+import { Command } from "./actions/Command";
 
 export type GameControllerEvents = {
   cardClicked: Card;
@@ -30,14 +32,16 @@ export class GameController extends EventEmitter<GameControllerEvents> {
   }
 
   private registerActions(): void {
-    this.dispatcher.register(
-      CommandKey.PlayCard,
-      new PlayCardAction(this.game),
+    const actions = getActions(this.game);
+
+    Object.entries(actions).forEach(([key, action]) =>
+      this.dispatcher.register(key as CommandKey, action),
     );
   }
 
   private registerEvents() {
     this.renderer.on("cardClicked", this.handleCardClicked.bind(this));
+    this.renderer.on("drawCard", this.handleDrawCard.bind(this));
   }
 
   private handleCardClicked({
@@ -52,7 +56,20 @@ export class GameController extends EventEmitter<GameControllerEvents> {
     const result = this.dispatcher.dispatch<PlayCardCommand>(command);
 
     if (result.success) {
-      this.renderer.render();
+      this.renderer.emit("deckUpdated", null);
+      return;
+    }
+
+    alert(`Error: ${result.reason}`);
+  }
+
+  private handleDrawCard({ actor, card }: { actor: Player; card: Card }): void {
+    const command = new DrawCardCommand(actor, card);
+
+    const result = this.dispatcher.dispatch<DrawCardCommand>(command);
+
+    if (result.success) {
+      this.renderer.emit("deckUpdated", null);
       return;
     }
 

@@ -41,6 +41,14 @@ export class Deck {
     console.log("Deck: ", this.cards.map((card) => card.value).join(", "));
   }
 
+  public get list(): Card[] {
+    return this.cards;
+  }
+
+  public get length(): number {
+    return this.cards.length;
+  }
+
   private initialiseDeck(): void {
     const amounts = Object.entries(CARD_SELECTION_TABLE);
 

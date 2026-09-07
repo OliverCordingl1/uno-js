@@ -13,7 +13,7 @@ export class Game {
     this._deck = new Deck();
     this._dealer = new Dealer(this._deck);
 
-    const numOfPlayers = 4;
+    const numOfPlayers = 1;
     console.log("Seeding players");
 
     for (let i = 0; i < numOfPlayers; i++) {
@@ -43,5 +43,9 @@ export class Game {
 
   public get dealer(): Dealer {
     return this._dealer;
+  }
+
+  public get deck(): Deck {
+    return this._deck;
   }
 }
