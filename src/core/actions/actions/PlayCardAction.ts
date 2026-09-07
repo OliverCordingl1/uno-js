@@ -17,8 +17,18 @@ export class PlayCardAction implements Action<PlayCardCommand> {
       };
     }
 
-    // TODO: TEMP: Deal another card to the player.
-    this.game.dealer.deal(actor, 1);
+    const lastPlayedCard = this.game.deck.lastPlayedCard;
+    const isPlayable = lastPlayedCard.isMatch(card);
+
+    if (!isPlayable) {
+      return {
+        success: false,
+        reason: "Card cannot be played",
+      };
+    }
+
+    this.game.deck.discard(card);
+    actor.removeCard(card);
     this.game.turnManager.nextTurn();
 
     return {

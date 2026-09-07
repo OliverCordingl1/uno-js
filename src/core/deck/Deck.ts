@@ -6,6 +6,7 @@ import { CARD_SELECTION_TABLE } from "./DeckConstants";
 
 export class Deck {
   private cards: Card[] = [];
+  private discardedCards: Card[] = [];
 
   constructor() {
     this.initialiseDeck();
@@ -37,8 +38,31 @@ export class Deck {
     return this.cards.pop()!;
   }
 
+  public discardTopCard(): void {
+    const card = this.pop();
+
+    this.discard(card);
+  }
+
+  public discard(card: Card): void {
+    this.discardedCards.push(card);
+  }
+
   public printDeck(): void {
     console.log("Deck: ", this.cards.map((card) => card.value).join(", "));
+  }
+
+  public get lastPlayedCard(): Card {
+    const length = this.discardedCards.length;
+    if (length <= 0) {
+      throw new Error("No cards in discard pile");
+    }
+
+    return this.discardedCards[length - 1];
+  }
+
+  public get topCard(): Card {
+    return this.cards[this.cards.length - 1];
   }
 
   public get list(): Card[] {
@@ -47,6 +71,10 @@ export class Deck {
 
   public get length(): number {
     return this.cards.length;
+  }
+
+  public get discarded(): Card[] {
+    return this.discardedCards;
   }
 
   private initialiseDeck(): void {

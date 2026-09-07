@@ -5,7 +5,7 @@ import { DrawCardCommand, DrawCardResult } from "../commands/DrawCardCommand";
 export class DrawCardAction implements Action<DrawCardCommand> {
   constructor(private readonly game: Game) {}
 
-  public execute({ card, actor }: DrawCardCommand): DrawCardResult {
+  public execute({ actor }: DrawCardCommand): DrawCardResult {
     const turnManager = this.game.turnManager;
 
     const isCurrentTurn = turnManager.isCurrentPlayer(actor);
@@ -17,7 +17,17 @@ export class DrawCardAction implements Action<DrawCardCommand> {
       };
     }
 
-    this.game.dealer.deal(actor, 1);
+    // TODO Idk if uno rules dictate you must play, or must pick up.
+    const { lastPlayedCard, topCard } = this.game.deck;
+    const hasMatchingCard = lastPlayedCard.isMatch(topCard);
+
+    if (hasMatchingCard) {
+      const drawnCard = this.game.deck.pop();
+      this.game.deck.discard(drawnCard);
+    } else {
+      this.game.dealer.deal(actor, 1);
+    }
+
     this.game.turnManager.nextTurn();
 
     return {

@@ -10,12 +10,20 @@ export type DeckRendererEvents = {
 
 export class DeckRenderer extends EventEmitter<DeckRendererEvents> {
   private root: HTMLDivElement;
+  private deckRoot: HTMLDivElement;
+  private discardRoot: HTMLDivElement;
 
   constructor(private deck: Deck) {
     super();
 
     this.root = document.createElement("div");
     this.root.classList.add("deck");
+
+    this.deckRoot = document.createElement("div");
+    this.deckRoot.classList.add("card-stack");
+
+    this.discardRoot = document.createElement("div");
+    this.discardRoot.classList.add("card-stack");
 
     this.draw();
 
@@ -24,6 +32,28 @@ export class DeckRenderer extends EventEmitter<DeckRendererEvents> {
 
   private draw(): void {
     this.clearRoot();
+
+    this.drawDeck();
+    this.drawDiscard();
+
+    this.root.appendChild(this.deckRoot);
+    this.root.appendChild(this.discardRoot);
+  }
+
+  private drawDiscard(): void {
+    const root = this.discardRoot;
+    this.clearRoot(root);
+
+    const topFourCards = this.deck.discarded.slice(-4);
+    topFourCards.forEach((card) => {
+      const cardElement = new CardElement(card);
+      root.appendChild(cardElement.domElement);
+    });
+  }
+
+  private drawDeck(): void {
+    const root = this.deckRoot;
+    this.clearRoot(root);
 
     const cards = this.deck.list;
     const hiddenCards = Math.min(3, this.deck.length);
@@ -34,7 +64,7 @@ export class DeckRenderer extends EventEmitter<DeckRendererEvents> {
       hiddenCard.classList.add("card");
       hiddenCard.classList.add("hidden-card");
 
-      this.root.appendChild(hiddenCard);
+      root.appendChild(hiddenCard);
     }
 
     if (!topCard) return;
@@ -43,12 +73,12 @@ export class DeckRenderer extends EventEmitter<DeckRendererEvents> {
 
     card.on("clicked", (card) => this.emit("drawCard", card));
 
-    this.root.appendChild(card.domElement);
+    root.appendChild(card.domElement);
   }
 
-  private clearRoot(): void {
-    while (this.root.firstChild) {
-      this.root.removeChild(this.root.lastChild!);
+  private clearRoot(root: HTMLElement = this.root): void {
+    while (root.firstChild) {
+      root.removeChild(root.lastChild!);
     }
   }
 

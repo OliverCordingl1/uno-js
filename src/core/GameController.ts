@@ -8,7 +8,6 @@ import { DrawCardCommand } from "./actions/commands/DrawCardCommand";
 import { EventEmitter } from "./lib/EventEmitter";
 import { Player } from "./player/Player";
 import { CommandKey } from "./actions/CommandKey";
-import { Command } from "./actions/Command";
 
 export type GameControllerEvents = {
   cardClicked: Card;
@@ -57,6 +56,7 @@ export class GameController extends EventEmitter<GameControllerEvents> {
 
     if (result.success) {
       this.renderer.emit("deckUpdated", null);
+      actor.emit("handUpdated", null);
       return;
     }
 

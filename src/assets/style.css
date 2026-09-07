@@ -159,6 +159,12 @@ body {
 }
 
 .table .deck {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 64px;
+}
+
+.deck .card-stack {
   position: relative;
   width: 250px;
 }
@@ -170,28 +176,28 @@ body {
   transition: transform ease-in-out 150ms;
 }
 
-.table .deck .card:not(.hidden-card):hover {
+.card-stack .card:hover {
+  transform: rotate(0.5deg);
+}
+
+.card-stack .card:last-of-type:hover {
   transform: translateY(-8px) rotate(1deg) scale(1.025);
   cursor: pointer;
 }
 
-.table .deck .hidden-card:hover {
-  transform: rotate(0.5deg);
-}
-
-.table .deck .hidden-card:nth-of-type(1) {
+.card-stack .card:nth-of-type(1) {
   left: -8px;
   top: 4px;
   z-index: 3;
 }
 
-.table .deck .hidden-card:nth-of-type(2) {
+.card-stack .card:nth-of-type(2) {
   left: -16px;
   top: 8px;
   z-index: 2;
 }
 
-.table .deck .hidden-card:nth-of-type(3) {
+.card-stack .card:nth-of-type(3) {
   left: -24px;
   top: 12px;
   z-index: 1;

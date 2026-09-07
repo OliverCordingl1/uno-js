@@ -21,9 +21,21 @@ export class Player extends EventEmitter<PlayerEvents> {
     this.emit("handUpdated", null);
   }
 
+  public removeCard(card: Card): void {
+    const index = this._hand.indexOf(card);
+
+    this._hand.splice(index, 1);
+  }
+
   public setActiveStatus(status: boolean): void {
     this.isActiveTurn = status;
     this.emit("activeStatusChanged", status);
+  }
+
+  public hasMatchingCard(card: Card): boolean {
+    const matching = this._hand.find(card.isMatch.bind(this));
+
+    return !!matching;
   }
 
   public get name(): string {

@@ -30,6 +30,8 @@ export class Game {
 
     this._players.forEach((player) => this._dealer.deal(player, 7));
 
+    this._deck.discardTopCard();
+
     this._turnManager.notifyPlayersOfTurn();
   }
 
